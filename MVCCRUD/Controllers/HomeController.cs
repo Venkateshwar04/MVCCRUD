@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using PagedList;
 
 namespace MVCCRUD.Controllers
 {
@@ -10,10 +12,14 @@ namespace MVCCRUD.Controllers
     {
         MVCCRUDDBContext _context = new MVCCRUDDBContext();
 
-        public ActionResult Index()
+        public ViewResult Index(int? page)
         {
             var listofData = _context.Products.ToList();
-            return View(listofData);
+            //return View(listofData);
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(listofData.ToPagedList(pageNumber, pageSize));
         }
         [HttpGet]
         public ActionResult Create() 
